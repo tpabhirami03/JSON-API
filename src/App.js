@@ -1,24 +1,64 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [productName,setProductName]=useState("")
+  const[productData,setproductdata]=useState()
+  
+
+  const searchProduct= async () => {
+
+    if(productName){
+      let response= await fetch(`https://dummyjson.com/products/${productName}?fullText=true`)
+
+      // 
+
+
+
+     response.json().then((res)=>{
+      console.log(res);
+      setproductdata(res)
+     })
+
+     
+
+    }
+    else{
+      alert('please fill the input box')
+    }
+
+  
+  }
+  console.log(productName);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="text-center container mt-5">
+      <input onChange={e=>setProductName(e.target.value)}  type="text" placeholder='enter product name'/>
+  
+  <button onClick={searchProduct} type="button"  value={'search'} >Search</button>
+
+
+      {
+        productData && (
+        <div>
+        <h1>Product Details</h1>
+        <h5>ID:{productData?.id}</h5>
+        <h5>TITLE:{productData?.title}</h5>
+        <h5>description:{productData?.description}</h5>
+        <h5>price:{productData?.price}</h5>
+  
+        
+
+
+        </div>
+      )
+      }
+
+ 
+</div>
+    </>
+   
   );
 }
 
